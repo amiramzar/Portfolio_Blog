@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Category;
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
-
+use App\Tag;
 use App\Post;
+use App\Http\Requests;
+use App\Http\Requests\StorePostRequest;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
+use Illuminate\View\View;
 
 class PostsController extends Controller
 {
@@ -38,9 +41,11 @@ class PostsController extends Controller
     public function create()
     {
         $categories = Category::all();
+        $tags = Tag::all();
 
         return view('admin.posts.create')->with([
-            'categories' => $categories
+            'categories' => $categories,
+            'tags' => $tags
         ]);
     }
 
@@ -51,12 +56,12 @@ class PostsController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-        
         $requestData = $request->all();
         
-        Post::create($requestData);
+        $post = Post::create($requestData);
+        $post->tags()->sync($request->tags);
 
         return redirect('admin/posts')->with('flash_message', 'Post added!');
     }
@@ -86,9 +91,11 @@ class PostsController extends Controller
     {
         $post = Post::findOrFail($id);
         $categories = Category::all();
+        $tags = Tag::all();
 
         return view('admin.posts.edit', compact('post'))->with([
-            "categories" => $categories
+            "categories" => $categories,
+            "tags" => $tags
         ]);
     }
 
@@ -100,13 +107,13 @@ class PostsController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(Request $request, $id)
+    public function update(StorePostRequest $request, $id)
     {
-        
         $requestData = $request->all();
         
         $post = Post::findOrFail($id);
         $post->update($requestData);
+        $post->tags()->sync($request->tags);
 
         return redirect('admin/posts')->with('flash_message', 'Post updated!');
     }
