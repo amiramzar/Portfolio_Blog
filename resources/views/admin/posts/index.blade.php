@@ -37,7 +37,7 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $item->title }}</td>
-                                        <td>{{ $item->content }}</td>
+                                        <td>{!! substr($item->content, 0, 100) !!}</td>
                                         <td>{{ $item->slug }}</td>
                                         <td>{{!empty($item->category) ? $item->category->name:''}}</td>
                                         <td>

@@ -13,9 +13,12 @@
         <input class="form-control" name="title" type="text" id="title" value="{{ isset($post->title) ? $post->title : ''}}" >
         {!! $errors->first('title', '<p class="help-block">:message</p>') !!}
     </div>
-    <div class="form-group {{ $errors->has('content') ? 'has-error' : ''}}">
+    <div class="form-group {{ $errors->has('content') ? 'has-error' : ''}} ">
         <label for="content" class="control-label">{{ 'Content' }}</label>
-        <textarea class="form-control" rows="5" name="content" type="textarea" id="content" >{{ isset($post->content) ? $post->content : ''}}</textarea>
+        <div id="content">
+          {!! isset($post->content) ? $post->content : '' !!}
+        </div>
+        <textarea class="form-control" rows="5" name="content" type="textarea" style="display: none" id="content-textarea" >{{ isset($post->content) ? $post->content : ''}}</textarea>
         {!! $errors->first('content', '<p class="help-block">:message</p>') !!}
     </div>
     <div class="form-group {{ $errors->has('slug') ? 'has-error' : ''}}">
@@ -30,7 +33,7 @@
                 <option value="{{$category->id}}" @if(!empty($post) && $category->id == $post->category_id) selected @endif>{{$category->name}}</option>
             @endforeach
         </select>
-        <!-- <input class="form-control" name="category_id" type="number" id="category_id" value="{{ isset($post->category_id) ? $post->category_id : ''}}" > -->
+        {{-- <input class="form-control" name="category_id" type="number" id="category_id" value="{{ isset($post->category_id) ? $post->category_id : ''}}" > --}}
         {!! $errors->first('category_id', '<p class="help-block">:message</p>') !!}
     </div>
     <div class="form-group {{ $errors->has('tags') ? 'has-error' : ''}}">
@@ -40,7 +43,7 @@
                 <option value="{{$tag->id}}" @if(!empty($post) && in_array($tag->id, $post->tags->pluck('id')->toArray())) selected @endif>{{$tag->name}}</option>
             @endforeach
         </select>
-        <!-- <input class="form-control" name="category_id" type="number" id="category_id" value="{{ isset($post->category_id) ? $post->category_id : ''}}" > -->
+        {{-- <input class="form-control" name="category_id" type="number" id="category_id" value="{{ isset($post->category_id) ? $post->category_id : ''}}"> --}}
         {!! $errors->first('category_id', '<p class="help-block">:message</p>') !!}
     </div>
   </div>
@@ -65,3 +68,22 @@
 <div class="form-group">
     <input class="btn btn-primary" type="submit" value="{{ $formMode === 'edit' ? 'Update' : 'Create' }}">
 </div>
+
+@section('styles')
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+@endsection
+
+@section('scripts')
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+  <script>
+    $(document).ready(function() {
+      var quill = new Quill('#content', {
+        theme: 'snow'
+      });
+
+      quill.on('text-change', function (delta, oldDelta, source) {
+          $('#content-textarea').text($(".ql-editor").html());
+      });
+    });
+  </script>
+@endsection
