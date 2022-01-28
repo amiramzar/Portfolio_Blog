@@ -29,7 +29,11 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>#</th><th>Title</th><th>Content</th><th>Slug</th><th>Category</th><th>Actions</th>
+                                        <th>#</th>
+                                        <th>Title</th>
+                                        <th>Slug</th>
+                                        <th>Category</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -37,7 +41,6 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $item->title }}</td>
-                                        <td>{!! substr($item->content, 0, 100) !!}</td>
                                         <td>{{ $item->slug }}</td>
                                         <td>{{!empty($item->category) ? $item->category->name:''}}</td>
                                         <td>

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Post extends Model
 {
@@ -18,5 +19,15 @@ class Post extends Model
         return $this->belongsToMany(Tag::class, 'tag_post');
     }
 
+  
+    public function setSlugAttribute($value) 
+    {
+        $slug = $value;
+        if(empty($slug)) {
+            $slug = $this->attributes['titles'];
+        }
+
+        $this->attributes['slug'] = Str::slug($slug, '-');
+    }
 
 }
