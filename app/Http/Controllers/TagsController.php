@@ -6,6 +6,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Tag;
+use App\Http\Requests\TagRequest;
 use Illuminate\Http\Request;
 
 class TagsController extends Controller
@@ -46,7 +47,7 @@ class TagsController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request)
+    public function store(TagRequest $request)
     {
         
         $requestData = $request->all();
@@ -92,7 +93,7 @@ class TagsController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(Request $request, $id)
+    public function update(TagRequest $request, $id)
     {
         
         $requestData = $request->all();
