@@ -9,7 +9,11 @@ class Post extends Model
 {
     protected $table = 'posts';
 
-    protected $fillable = ['title', 'content', 'slug', 'keywords', 'description', 'category_id'];
+    protected $fillable = ['title', 'content', 'slug', 'keywords', 'description', 'category_id', 'published'];
+
+    protected $casts = [
+        'published' => 'boolean'
+    ];
 
     public function category() {
         return $this->belongsTo(Category::class);
@@ -24,7 +28,7 @@ class Post extends Model
     {
         $slug = $value;
         if(empty($slug)) {
-            $slug = $this->attributes['titles'];
+            $slug = $this->attributes['title'];
         }
 
         $this->attributes['slug'] = Str::slug($slug, '-');

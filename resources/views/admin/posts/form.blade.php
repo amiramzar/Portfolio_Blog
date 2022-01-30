@@ -59,6 +59,12 @@
         <textarea class="form-control" rows="5" name="description" type="textarea" id="description" >{{ isset($post->description) ? $post->description : ''}}</textarea>
         {!! $errors->first('description', '<p class="help-block">:message</p>') !!}
     </div>
+
+    <div class="custom-control custom-switch">
+      <input type="checkbox" class="custom-control-input" id="published" value="true" @if(!empty($post) && $post->published) checked @endif() name="published">
+      <label class="custom-control-label" for="published">Public</label>
+    </div>
+
   </div>
 </div>
 
