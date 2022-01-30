@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Category;
 use App\Tag;
 use App\Post;
@@ -11,6 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
+use Image;
 
 class PostsController extends Controller
 {
@@ -109,12 +111,23 @@ class PostsController extends Controller
      */
     public function update(StorePostRequest $request, $id)
     {
+
         $requestData = $request->all();
         $requestData['published'] = false;
 
         if($request->published) {
             $requestData['published'] = true;
         }
+
+        if ($request->hasFile('thumbnail')) {
+            $fileName = "thumbnails/{$requestData['title']}.{$request->file('thumbnail')->getClientOriginalExtension()}";
+            $imagePathSaved = Image::make($request->file('thumbnail'))->resize(300, null, function($constraint){
+                $constraint->aspectRatio();
+            })->saved($fileName);
+            $requestData['thumbnail'] = $fileName;
+        }
+        
+        dd($requestData, $imagePathSaved, $fileName);
         
         $post = Post::findOrFail($id);
         $post->update($requestData);

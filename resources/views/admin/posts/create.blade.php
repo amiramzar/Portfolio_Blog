@@ -21,6 +21,7 @@
                         @endif
 
                         <form method="POST" action="{{ url('/admin/posts') }}" accept-charset="UTF-8" class="form-horizontal" enctype="multipart/form-data">
+                            {{ method_field('PATCH') }}
                             {{ csrf_field() }}
 
                             @include ('admin.posts.form', ['formMode' => 'create'])
